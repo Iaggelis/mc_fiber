@@ -48,9 +48,10 @@ int main(int argc, char **argv)
     cout << *counter1 << endl;
 
     auto c2 = new TCanvas("c2", "test", 100, 100, 800, 600);
-    auto myHist = filter1.Histo1D({"test", "test", 10, 0, 1}, "r");
-
-    myHist->DrawClone();
+    auto myHist = filter1.Histo1D({"test", "test", 10, 0, 1}, "x");
+    auto h2 = filter1.Histo2D({"test", "test", 10, 0, 1, 10, 0, 1}, "x", "r");
+    myHist->Scale(1.0 / N);
+    myHist->DrawClone("LSAME");
     c2->Update();
     cout << "stats:" << endl;
     auto report = photons_load.Report();
