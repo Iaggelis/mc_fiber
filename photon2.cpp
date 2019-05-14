@@ -20,7 +20,7 @@ auto genTheta = [&]() {
 };
 
 auto genPhi = [&]() {
-    return fmod((R.Uniform(1.0) * 2.0 * M_PI), 2.0 * M_PI);
+    return R.Uniform(2.0 * M_PI);
 };
 
 void fill_tree(const char *treename, const char *filename, const int size)
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     constexpr long N = 100000;
     constexpr double Radius = 1.0;
     constexpr double beta0 = TMath::DegToRad() * 60.0;
-    // fill_tree(treename, filename, N);
+    fill_tree(treename, filename, N);
 
     RDataFrame photons_load(treename, filename);
     auto augmented = photons_load.Define("lenght", "x+y");
@@ -53,12 +53,11 @@ int main(int argc, char **argv)
     auto trackHist = augmented.Graph("x", "lenght");
     auto length = augmented.Range(0, 10);
     auto myHist = filter1.Histo1D({"myHist", "photon yield", 10, 0, 1}, "x");
-    // auto h2 = filter1.Histo2D({"test", "test", 10, 0, 1, 10, 0, 1}, "x", "r");
     myHist->Scale(1.0 / N);
-    // myHist->Draw("L HIST");
+    myHist->Draw("L HIST");
     // c2->Update();
     // trackHist->Sort();
-    trackHist->Draw("AP");
+    // trackHist->Draw("AP");
     cout << "stats:" << endl;
     auto report = photons_load.Report();
     report->Print();
